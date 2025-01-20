@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Data Visualization Website</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/handsontable/dist/handsontable.full.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/echarts@5.4.2/dist/echarts.min.js"></script>
+    <style>
+        body {
+            padding-top: 60px;
+        }
+        .sidebar {
+            height: 100vh;
+            position: fixed; 
+            z-index: 1;
+            left: 0;
+            overflow-x: hidden;
+        }
+        .content {
+            padding: 20px;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
+            <div class="container-fluid">
+                <a class="navbar-brand" href="#">Data Visualization</a>
+            </div>
+        </nav>
+    </header>
+
+    <div class="container-fluid">
+        <div class="row">
+            <nav class="col-md-3 col-lg-2 d-md-block bg-light sidebar collapse">
+                <div class="position-sticky pt-3 sidebar-sticky">
+                    <ul class="nav flex-column">
+                        <li class="nav-item">
+                            <a class="nav-link active" href="#overview">Overview</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#tables">Data Tables</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#visualizations">Visualizations</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#resources">Resources</a>
+                        </li>
+                    </ul>
+                </div>
+            </nav>
+
+            <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4 content">
+                <div id="overview">
+                    <h1>Data Overview</h1>
+                    <p>Welcome to the data visualization website. Here you can explore various datasets, view interactive tables and charts.</p>
+                </div>
+                
+                <div id="tables">
+                    <h2>Data Tables</h2>
+                    <!-- CSV tables will be dynamically inserted here -->
+                </div>
+
+                <div id="visualizations">
+                    <h2>Data Visualizations</h2>    
+                    <!-- ECharts visualizations will be dynamically inserted here -->
+                </div>
+                
+                <div id="resources">
+                    <h2>Resources</h2>
+                    <ul>
+                        <li><a href="GNAI1_Clincal.pdf" target="_blank">GNAI1_Clincal.pdf</a></li>
+                        <li><a href="exp_GSE9476.xlsx" target="_blank">exp_GSE9476.xlsx</a></li>
+                        <!-- More resource files -->
+                    </ul>
+                </div>
+            </main>
+        </div>
+    </div>
+    
+    <script src="https://cdn.jsdelivr.net/npm/handsontable/dist/handsontable.full.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/papaparse@5.3.2/papaparse.min.js"></script>
+    <script>
+        // JavaScript code to dynamically load and display CSV data, Excel files, 
+        // generate ECharts visualizations etc will be added here
+        
+        // Example code to load a CSV and display as a table using Handsontable
+        const dataTable = document.createElement('div');
+        dataTable.id = 'my-table';
+        document.getElementById('tables').appendChild(dataTable);
+        
+        fetch('mRNA_surv.csv')
+            .then(response => response.text())
+            .then(csvData => {
+                const data = Papa.parse(csvData, {header: true}).data;
+                new Handsontable(dataTable, {
+                    data: data,
+                    rowHeaders: true,
+                    colHeaders: true
+                });
+            });
+            
+        // Example ECharts bar chart 
+        const chart = echarts.init(document.createElement('div'));
+        chart.setOption({
+            xAxis: {
+                type: 'category',
+                data: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
+            },
+            yAxis: {
+                type: 'value'
+            },
+            series: [
+                {
+                    data: [120, 200, 150, 80, 70, 110, 130],
+                    type: 'bar'
+                }
+            ]
+        });
+        document.getElementById('visualizations').appendChild(chart.getDom());
+    </script>
+</body>
+</html>
